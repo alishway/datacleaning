@@ -12,8 +12,6 @@
 library(reshape2)
 
 ## Task 1 - Merge the training and the test sets to create one data set.
-
-# reading the test and training sets' components (activity, measurements and subject)
 # the files are space delimited, which is the default option in the read.table function. we can call the function without any additional parameters.
 # combine X test and training set first
 x_test_set<-read.table("UCI HAR Dataset/test/X_test.txt")
@@ -48,11 +46,6 @@ names(subject_test_set) <- c("subjects")
 # Combine subjects test and training sets
 subject_complete <- rbind(subject_training_set, subject_test_set)
 
-
-
-
-
-
 # Combine all data together
 dataset <- cbind(x_complete,y_complete,subject_complete)
 # to view a snapshot of dataset
@@ -67,10 +60,9 @@ dataset[1:5, 1:5] # we only take a look at 5 rows and columns of the dataset
 
 
 # Tasks 2. Select only the measurements on the mean and standard deviation
-#features_mean_stdx <- features_names[grep("mean\\(\\)|std\\(\\)", features_names_list), ]
-#features_mean_std <- regexpr("*mean\\(\\)*",features_names_list)>0 | regexpr("*std\\(\\)*",features_names_list)>0
-	features_mean_std <- regexpr("*mean\\(\\)*|*std\\(\\)*",features_names_list)>0 
-	index_mean_std <- cbind(x_complete[,features_mean_std],y_complete,subject_complete)
+features_mean_std <- regexpr("*mean\\(\\)*|*std\\(\\)*",features_names_list)>0 
+index_mean_std <- cbind(x_complete[,features_mean_std],y_complete,subject_complete)
+
 # head(index_mean_std)
  # tBodyAcc-mean()-X tBodyAcc-mean()-Y tBodyAcc-mean()-Z tBodyAcc-std()-X tBodyAcc-std()-Y tBodyAcc-std()-Z
 # 1         0.2885845       -0.02029417        -0.1329051       -0.9952786       -0.9831106       -0.9135264
@@ -81,10 +73,10 @@ dataset[1:5, 1:5] # we only take a look at 5 rows and columns of the dataset
 # 6         0.2771988       -0.01009785        -0.1051373       -0.9973350       -0.9904868       -0.9954200	
 
 #Task 3 - replace the name of the activities in the data set with more meaningful name
-	# already label this above
+	# This is already done in the prvious steps - see above
 	
 #Task 4 - appropriately label the data set
-# Remove occurances of -mean(), -std(), and other formations of them
+# Remove occurrences of -mean(), -std(), and other formations of them
 
  names(index_mean_std) <- gsub("\\-mean\\(\\)\\-", "-mean.", names(index_mean_std))
  names(index_mean_std) <- gsub("\\-std\\(\\)\\-", "-standard_deviation.", names(index_mean_std))
